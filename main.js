@@ -15,25 +15,33 @@ let frame = d3
   .attr("width", FRAME_WIDTH)
   .attr("class", "frame");
 
-// // setting up scaling functions
-// const MAX_Y = d3.max(data, (d) => {
-//   return d;
-// });
+// setting up scaling functions
+const MAX_Y = d3.max(data, (d) => {
+  return d;
+});
 
-// const Y_SCALE = d3
-//   .scaleLinear()
-//   .domain([0, VIS_WIDTH])
-//   .range([0, MAX_Y + 10000]);
+const Y_SCALE = d3
+  .scaleLinear()
+  .domain([0, MAX_Y + 10000])
+  .range([0, VIS_HEIGHT]);
 
-// // adding points
-// frame
-//   .selectAll("points")
-//   .data(data)
-//   .enter()
-//   .append("circle")
-//   .attr("cx", MARGINS.left)
-//   .attr("cy", (d) => {
-//     return Y_SCALE(d) - MARGINS.top;
-//   })
-//   .attr("r", 20)
-//   .attr("class", "points");
+// adding points
+frame
+  .selectAll("points")
+  .data(data)
+  .enter()
+  .append("circle")
+  .attr("cx", MARGINS.left * 4)
+  .attr("cy", (d) => {
+    return Y_SCALE(d) + MARGINS.top;
+  })
+  .attr("r", 10)
+  .attr("fill", "pink")
+  .attr("class", "points");
+
+// add an axis
+frame
+  .append("g")
+  .attr("transform", "translate(" + MARGINS.left * 2 + "," + MARGINS.top + ")")
+  .call(d3.axisLeft(Y_SCALE).ticks(4))
+  .attr("font-size", "20px");
